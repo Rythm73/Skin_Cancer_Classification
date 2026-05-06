@@ -1,4 +1,4 @@
- ## Multi-Class Skin Cancer Classification — Deep Benchmarking
+# Multi-Class Skin Cancer Classification — Deep Benchmarking
 
 ---
 An end-to-end computer vision system for classifying 7 types of skin lesions using the [HAM10000](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000) dataset. This project benchmarks a custom CNN baseline against fine-tuned ResNet-50 and EfficientNet-B3 architectures, with a specific focus on handling severe class imbalance and ensuring model interpretability through Grad-CAM.
@@ -12,6 +12,14 @@ globally. This project trains and compares three deep learning classifiers on th
 through lesion-aware data splitting, minority oversampling, and weighted cross-entropy
 loss. Grad-CAM visualisations demonstrate that the best-performing model focuses on
 clinically meaningful regions, providing a foundation for explainable medical AI.
+
+---
+
+## Pipeline Overview
+
+<p align="center">
+  <img src="assets/pipeline.svg" alt="End-to-end project pipeline" width="90%" />
+</p>
 
 ---
 
@@ -36,6 +44,14 @@ clinically meaningful regions, providing a foundation for explainable medical AI
 - **Augmentation** — random horizontal/vertical flip, 30° rotation, colour jitter,
   and affine translate applied at train time only.
 
+#### Class Distribution: Before vs. After Oversampling
+
+The original HAM10000 dataset is dominated by melanocytic nevi (`nv`), which accounts for ~67% of all images. After applying lesion-aware splitting and oversampling minority classes to 500 images each, the training distribution is far more balanced.
+
+<p align="center">
+  <img src="assets/before_after_sampling.png" alt="Class distribution before and after oversampling" width="85%" />
+</p>
+
 ### Interpretability
 
 Gradient-weighted Class Activation Mapping (**Grad-CAM**) is used to visualise which
@@ -46,6 +62,14 @@ image regions each model attends to. Target layers:
 | EfficientNet-B3 | `features[-1][0]` — last Conv2d before avgpool |
 | ResNet-50 | `layer4[-1].conv3` — last conv in final Bottleneck |
 | Custom CNN | `features[8]` — Conv2d(64→128) in Block 3 |
+
+#### Grad-CAM Visualisation
+
+Heatmaps highlight the regions the model relies on when making a prediction. The best-performing model focuses on lesion morphology — pigmented core, irregular borders, and asymmetric regions — which aligns with what dermatologists examine clinically.
+
+<p align="center">
+  <img src="assets/gradcam.png" alt="Grad-CAM heatmaps overlaid on test images" width="90%" />
+</p>
 
 ---
 
@@ -62,28 +86,36 @@ The models were evaluated on a held-out test set ($n=1,516$) using a multi-metri
 | **Recall** | 0.4459 | 0.7606 | **0.7876** | **EfficientNet-B3** |
 | **ROC-AUC (Macro)** | 0.8479 | 0.9455 | **0.9552** | **EfficientNet-B3** |
 
+### Confusion Matrices
+
+Per-class confusion matrices on the held-out test set show that both transfer-learning models classify minority classes (`mel`, `akiec`, `df`, `vasc`) well, with EfficientNet-B3 showing slightly stronger diagonal dominance.
+
+<p align="center">
+  <img src="assets/confusion_matrix_efficientnet.png" alt="EfficientNet-B3 confusion matrix" width="48%" />
+  <img src="assets/confusion_matrix_resnet50.png" alt="ResNet-50 confusion matrix" width="48%" />
+</p>
+
+<p align="center"><i>Left: EfficientNet-B3. Right: ResNet-50.</i></p>
+
 ### 🔍 Performance Analysis
 * **EfficientNet-B3 Superiority**: This model outperformed the benchmarks in all categories, demonstrating the effectiveness of compound scaling for capturing fine-grained dermatological features.
 * **Clinical Reliability**: The model achieved a **Macro F1 of 0.6774** and an **ROC-AUC of 0.9552**, proving its ability to distinguish between various lesion types even under extreme class imbalance.
 * **Generalization**: EfficientNet-B3 achieved the highest recall (**0.7876**), which is critical in a clinical setting to minimize the risk of missed diagnoses.
 * **Baseline Comparison**: The Custom CNN underperformed significantly (0.2506 Macro F1), confirming that transfer learning with pre-trained ImageNet weights is essential for high-stakes medical image analysis.
+
 ---
 
 ## Project Structure
 
 ```
 skin-cancer-classification/
-├── data/               # Download instructions (raw images excluded from repo)
-│   └── README.md
-├── notebooks/          # Exploratory data analysis
-│   └── exploration.ipynb
-├── src/                # Core source code
-│   ├── __init__.py
-│   ├── dataset.py      # SkinLesionDataset, transforms, split & oversample helpers
-│   ├── models.py       # CustomCNN, ResNet-50, EfficientNet-B3 definitions
-│   ├── train.py        # Training loop + CLI entry point
-│   └── utils.py        # Metrics, plotting, Grad-CAM
+├── assets/             # README images & pipeline diagram
+├── data/               # Dataset (not tracked — see download instructions)
 ├── models/             # Saved checkpoints (.pt) — excluded from Git
+├── dataset.py          # SkinLesionDataset, transforms, split & oversample helpers
+├── models.py           # CustomCNN, ResNet-50, EfficientNet-B3 definitions
+├── train.py            # Training loop + CLI entry point
+├── utils.py            # Metrics, plotting, Grad-CAM
 ├── predict.py          # Single-image inference script
 ├── requirements.txt
 ├── .gitignore
@@ -97,26 +129,26 @@ skin-cancer-classification/
 ### 1. Clone & install
 
 ```bash
-git clone https://github.com/<your-username>/skin-cancer-classification.git
-cd skin-cancer-classification
+git clone https://github.com/Rythm73/Skin_Cancer_Classification.git
+cd Skin_Cancer_Classification
 pip install -r requirements.txt
 ```
 
 ### 2. Download the dataset
 
-See [`data/README.md`](data/README.md) for full instructions.
+Download HAM10000 from [Kaggle](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000) and extract into a `data/` folder at the repo root.
 
 ### 3. Train a model
 
 ```bash
 # Train EfficientNet-B3 (recommended)
-python src/train.py --data_dir data/ --model efficientnet --epochs 35
+python train.py --data_dir data/ --model efficientnet --epochs 35
 
 # Train ResNet-50
-python src/train.py --data_dir data/ --model resnet50 --epochs 35 --lr 1e-4
+python train.py --data_dir data/ --model resnet50 --epochs 35 --lr 1e-4
 
 # Train the Custom CNN baseline
-python src/train.py --data_dir data/ --model cnn --epochs 50 --lr 1e-3
+python train.py --data_dir data/ --model cnn --epochs 50 --lr 1e-3
 ```
 
 All checkpoints are saved to `models/best_<model_name>.pt`.
