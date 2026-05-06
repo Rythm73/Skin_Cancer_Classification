@@ -1,10 +1,10 @@
-# Multi-Class Skin Cancer Classification — Deep Benchmarking
+##Multi-Class Skin Cancer Classification — Deep Benchmarking
 
-An end-to-end computer vision system for classifying 7 types of skin lesions using the [HAM10000](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000) dataset. This project benchmarks a custom CNN baseline against fine-tuned ResNet-50 and EfficientNet-B3 architectures, with a specific focus on handling severe class imbalance and ensuring model interpretability through Grad-CAM
 ---
+An end-to-end computer vision system for classifying 7 types of skin lesions using the [HAM10000](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000) dataset. This project benchmarks a custom CNN baseline against fine-tuned ResNet-50 and EfficientNet-B3 architectures, with a specific focus on handling severe class imbalance and ensuring model interpretability through Grad-CAM.
 
 ## Abstract
-
+---
 Skin cancer is the most common human malignancy. Early and accurate diagnosis is
 critical for patient outcomes, yet access to expert dermatologists is unequal
 globally. This project trains and compares three deep learning classifiers on the
