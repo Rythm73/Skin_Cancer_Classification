@@ -184,18 +184,6 @@ python predict.py --image path/to/lesion.jpg \
 | `--no_class_weights` | `False` | Disable weighted cross-entropy |
 | `--img_size` | `300` | Input image size (px) |
 
----
-
-## Experiment Tracking *(optional)*
-
-Plug in [Weights & Biases](https://wandb.ai) or [MLflow](https://mlflow.org) to log
-loss curves, hyperparameters, and confusion matrices:
-
-```bash
-pip install wandb
-wandb login
-# Then add --use_wandb flag (implementation left as exercise)
-```
 
 ---
 
