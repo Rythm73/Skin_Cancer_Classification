@@ -36,3 +36,4 @@ mlruns/
 *.png
 *.jpg
 !assets/
+!assets/*.png
