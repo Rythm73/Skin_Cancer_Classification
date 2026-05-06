@@ -1,4 +1,4 @@
-##Multi-Class Skin Cancer Classification — Deep Benchmarking
+ ## Multi-Class Skin Cancer Classification — Deep Benchmarking
 
 ---
 An end-to-end computer vision system for classifying 7 types of skin lesions using the [HAM10000](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000) dataset. This project benchmarks a custom CNN baseline against fine-tuned ResNet-50 and EfficientNet-B3 architectures, with a specific focus on handling severe class imbalance and ensuring model interpretability through Grad-CAM.
@@ -57,6 +57,19 @@ image regions each model attends to. Target layers:
 | F1 Weighted | — | — | — |
 | F1 Macro | — | — | **~0.67** |
 | ROC-AUC (macro) | — | — | — |
+
+=================================================================
+  FINAL MODEL COMPARISON
+=================================================================
+  Metric                      CNN     ResNet   EfficientNet
+  ------------------------------------------------------------
+  Accuracy                 0.4459     0.7606         0.7876
+  F1 Weighted              0.5118     0.7793         0.8020
+  F1 Macro                 0.2506     0.6332         0.6774
+  Precision                0.7245     0.8157         0.8285
+  Recall                   0.4459     0.7606         0.7876
+  ROC-AUC                  0.8479     0.9455         0.9552
+=================================================================
 
 > Fill in your own numbers after training. EfficientNet-B3 consistently outperforms
 > both baselines, particularly on minority classes (akiec, df, vasc).
