@@ -1,0 +1,38 @@
+# ── Dataset & model weights ────────────────────────────────────────────────────
+data/HAM10000_images_part_*/
+data/*.csv
+models/*.pt
+models/*.pth
+
+# ── Python ─────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Virtual environments ───────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+
+# ── Jupyter ────────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ── OS / IDE ───────────────────────────────────────────────────────────────────
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# ── Experiment tracking ────────────────────────────────────────────────────────
+wandb/
+mlruns/
+
+# ── Generated figures ─────────────────────────────────────────────────────────
+*.png
+*.jpg
+!assets/
