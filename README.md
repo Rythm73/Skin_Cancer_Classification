@@ -1,10 +1,6 @@
 # Multi-Class Skin Cancer Classification — Deep Benchmarking
 
-Automated classification of **7 types of skin lesions** from dermoscopy images using
-the [HAM10000](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000) dataset.
-Three architectures are benchmarked end-to-end: a custom CNN baseline, fine-tuned
-ResNet-50, and fine-tuned EfficientNet-B3.
-
+An end-to-end computer vision system for classifying 7 types of skin lesions using the [HAM10000](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000) dataset. This project benchmarks a custom CNN baseline against fine-tuned ResNet-50 and EfficientNet-B3 architectures, with a specific focus on handling severe class imbalance and ensuring model interpretability through Grad-CAM
 ---
 
 ## Abstract
